@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schedule Your Appointment</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin: 20px 0; }
+        .day { padding: 15px; border: 1px solid #ccc; text-align: center; cursor: pointer; border-radius: 5px; }
+        .available { background: #ccffcc; }
+        .unavailable { background: #ffcccc; }
+        .selected { background: #ccccff; border: 3px solid blue; transform: scale(1.05); }
+        .conflict-message { 
+            background: #fff3cd; 
+            border: 1px solid #ffeaa7; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .success-message { 
+            background: #d4edda; 
+            border: 1px solid #c3e6cb; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Select Appointment Date</h1>
+<p>Green dates are available. Red dates are unavailable.</p>
+
+<div id="calendar" class="calendar">
+    <!-- Calendar will be generated here -->
+</div>
+
+<div style="margin-top:20px;">
+    <button onclick="submitAppointment()" style="padding:10px 20px; font-size:16px;">
+        Schedule Appointment
+    </button>
+    <div id="feedback" style="margin-top:15px;"></div>
+</div>
+
+<script>
+let currentDayCount = 35;
+let newDatesAdded = 0;
+let dateAvailability = {}; // Track which dates are available
+
+function getDisplayDate(dayNumber) {
+    // Reset to 1 after 31, so: 1,2,3,...,31,1,2,3,...
+    return ((dayNumber - 1) % 31) + 1;
+}
+
+function generateCalendar() {
+    const calendar = document.getElementById('calendar');
+    calendar.innerHTML = '';
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    // Header
+    days.forEach(day => {
+        const header = document.createElement('div');
+        header.style.fontWeight = 'bold';
+        header.style.padding = '10px';
+        header.textContent = day;
+        calendar.appendChild(header);
+    });
+    
+    // Generate all current days
+    for (let i = 1; i <= currentDayCount; i++) {
+        const day = document.createElement('div');
+        day.className = 'day';
+        day.textContent = getDisplayDate(i);
+        day.setAttribute('data-day', i); // Store actual day number for tracking
+        
+        // If we already know this date's availability, use it
+        // Otherwise, determine availability (30% chance for green, new dates are always green)
+        const isNewDate = i > 35;
+        let isAvailable;
+        
+        if (dateAvailability[i] !== undefined) {
+            isAvailable = dateAvailability[i];
+        } else {
+            isAvailable = Math.random() < 0.3 || isNewDate; // 30% chance for green dates
+            dateAvailability[i] = isAvailable;
+        }
+        
+        day.classList.add(isAvailable ? 'available' : 'unavailable');
+        
+        if (isAvailable) {
+            day.onclick = function() {
+                // Clear previous selection
+                document.querySelectorAll('.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                document.getElementById('feedback').innerHTML = '';
+            };
+        } else {
+            day.onclick = function() {
+                const messages = [
+                    "This date is blocked for faculty development",
+                    "Advisor is attending a conference",
+                    "University holiday observance",
+                    "Scheduled maintenance day",
+                    "Department retreat",
+                    "Advisor called in sick",
+                    "Date reserved for mandatory faculty development workshop"
+                ];
+                alert(messages[Math.floor(Math.random() * messages.length)]);
+            };
+        }
+        
+        calendar.appendChild(day);
+    }
+}
+
+function addNewDates() {
+    const newDateCount = 1 + Math.floor(Math.random() * 6); // Add 5-10 new dates
+    currentDayCount += newDateCount;
+    newDatesAdded += newDateCount;
+    
+    // Mark all new dates as available (green)
+    for (let i = currentDayCount - newDateCount + 1; i <= currentDayCount; i++) {
+        dateAvailability[i] = true;
+    }
+    
+    // Regenerate calendar with new dates
+    generateCalendar();
+    
+    return newDateCount;
+}
+
+function submitAppointment() {
+    const selected = document.querySelector('.selected');
+    const feedback = document.getElementById('feedback');
+    
+    if (!selected) {
+        feedback.innerHTML = '<div class="conflict-message" style="background:#ffcccc;">⚠️ Please select an available date first</div>';
+        return;
+    }
+    
+    const selectedDate = parseInt(selected.getAttribute('data-day'));
+    
+    // EXTREMELY LOW success rate (10%) regardless of how many green dates
+    let successRate = 0.20;
+    
+    if (Math.random() < successRate) {
+        // SUCCESS! (extremely rare - 15% chance)
+        window.location.href = 'scheduling-continued.html';
+    } else {
+        // FAILURE (95% of the time)
+        const conflictMessages = [
+            "Scheduling conflict detected! Advisor just accepted a last-minute conference invitation.",
+            "Calendar synchronization error: That time slot was double-booked by the department chair.",
+            "Conflict detected: Advisor's pet has a vet appointment that day.",
+            "Scheduling collision: University board meeting just scheduled for that exact time.",
+            "Availability change: Advisor called in sick for the rest of the semester.",
+            "Calendar update: Department retreat extended through that week.",
+            "Conflict found: That slot was just taken by the dean's nephew.",
+            "System error: Time-space continuum disruption detected for that date.",
+            "Scheduling anomaly: Advisor's astrological chart shows unfavorable alignment.",
+            "Blocked: Required system maintenance scheduled campus-wide.",
+            "Conflict: Advisor's yoga class was rescheduled to that time.",
+            "Unavailable: Advisor is judging the annual pie-eating contest.",
+            "Calendar clash: Department potluck conflict detected.",
+            "Scheduling interference: Mercury in retrograde affects that time slot."
+        ];
+        
+        const conflictMessage = conflictMessages[Math.floor(Math.random() * conflictMessages.length)];
+        
+        // Mark this date as permanently unavailable (red)
+        dateAvailability[selectedDate] = false;
+        
+        // Add new dates when failure occurs (more new dates since we have more failures)
+        const newDateCount = addNewDates();
+        
+        feedback.innerHTML = `
+            <div class="conflict-message">
+                <strong>❌ Scheduling Conflict Detected</strong><br>
+                ${conflictMessage}<br><br>
+                <strong>🆕 Good News!</strong> We've added ${newDateCount} new available dates to the calendar!<br>
+                <em style="color:#666; font-size:12px;">Total new dates added: ${newDatesAdded} | Error code: SC-${Math.random().toString(36).substr(2, 6).toUpperCase()}</em>
+            </div>
+        `;
+        
+        // More frequently remove existing available dates to maintain frustration
+        if (Math.random() < 0.8) { // 80% chance to remove dates
+            setTimeout(() => {
+                // Find available dates that aren't new
+                const availableOldDates = [];
+                for (let i = 1; i <= currentDayCount - newDateCount; i++) {
+                    if (dateAvailability[i] === true) {
+                        availableOldDates.push(i);
+                    }
+                }
+                
+                if (availableOldDates.length > 0) {
+                    const datesToRemove = Math.min(2 + Math.floor(Math.random() * 3), availableOldDates.length);
+                    
+                    for (let i = 0; i < datesToRemove; i++) {
+                        const randomIndex = Math.floor(Math.random() * availableOldDates.length);
+                        const dateToRemove = availableOldDates[randomIndex];
+                        dateAvailability[dateToRemove] = false;
+                        availableOldDates.splice(randomIndex, 1);
+                    }
+                    
+                    // Regenerate to show changes
+                    generateCalendar();
+                    
+                    feedback.innerHTML += `<div class="conflict-message" style="margin-top:10px; background:#fff3cd;">⚠️ <strong>Update:</strong> ${datesToRemove} previously available date(s) just became unavailable due to scheduling changes.</div>`;
+                }
+            }, 1500);
+        }
+    }
+}
+
+// Initialize calendar when page loads
+generateCalendar();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scheduling Continued - BullAdvisor™</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .loading-bar {
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            margin: 5px 0;
+        }
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Congratulations!</h1>
+        <p>You've successfully passed the initial scheduling phase. Please complete the following forms to finalize your appointment.</p>
+        
+        <div id="phase1">
+            <h2>Phase 1: Initial Verification</h2>
+            <div class="loading-bar">
+                <div id="progress1" class="progress"></div>
+            </div>
+            <div class="form-group">
+                <label class="required">Student ID Verification</label>
+                <input type="text" id="studentId" placeholder="Enter your 9-digit student ID">
+            </div>
+            <div class="form-group">
+                <label class="required">Academic Standing Declaration</label>
+                <select id="academicStanding">
+                    <option value="">Select your standing...</option>
+                    <option value="good">Good Standing</option>
+                    <option value="probation">Academic Probation</option>
+                    <option value="warning">Academic Warning</option>
+                    <option value="suspended">Previously Suspended</option>
+                    <option value="unknown">I'm not sure</option>
+                </select>
+            </div>
+            <button onclick="startPhase2()">Continue to Phase 2</button>
+        </div>
+
+        <div id="phase2" class="hidden">
+            <h2>Phase 2: Meeting Details</h2>
+            <div class="loading-bar">
+                <div id="progress2" class="progress"></div>
+            </div>
+            <div class="form-group">
+                <label class="required">Meeting Purpose (select all that apply)</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="purpose" value="course"> Course Selection</label>
+                    <label><input type="checkbox" name="purpose" value="career"> Career Planning</label>
+                    <label><input type="checkbox" name="purpose" value="academic"> Academic Concerns</label>
+                    <label><input type="checkbox" name="purpose" value="personal"> Personal Issues</label>
+                    <label><input type="checkbox" name="purpose" value="other"> Other</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="required">Expected Meeting Duration</label>
+                <select id="duration">
+                    <option value="">Select duration...</option>
+                    <option value="15">15 minutes (Basic Questions)</option>
+                    <option value="30">30 minutes (Standard Meeting)</option>
+                    <option value="45">45 minutes (Complex Issues)</option>
+                    <option value="60">60 minutes (Comprehensive Review)</option>
+                </select>
+            </div>
+            <button onclick="startPhase3()">Continue to Phase 3</button>
+        </div>
+
+        <div id="phase3" class="hidden">
+            <h2>Phase 3: Additional Requirements</h2>
+            <div class="loading-bar">
+                <div id="progress3" class="progress"></div>
+            </div>
+            <div class="form-group">
+                <label class="required">Emergency Contact Information</label>
+                <input type="text" id="emergencyName" placeholder="Full Name">
+                <input type="text" id="emergencyPhone" placeholder="Phone Number" style="margin-top: 10px;">
+                <input type="text" id="emergencyRelation" placeholder="Relationship" style="margin-top: 10px;">
+            </div>
+            <div class="form-group">
+                <label class="required">Medical Information</label>
+                <select id="bloodType">
+                    <option value="">Select Blood Type...</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="unknown">I don't know</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Allergies or Medical Conditions</label>
+                <textarea id="medicalInfo" rows="3" placeholder="List any allergies, medical conditions, or special requirements..."></textarea>
+            </div>
+            <button onclick="startPhase4()">Continue to Final Phase</button>
+        </div>
+
+        <div id="phase4" class="hidden">
+            <h2>Final Phase: Review and Submit</h2>
+            <div class="loading-bar">
+                <div id="progress4" class="progress"></div>
+            </div>
+            <div class="form-group">
+                <label class="required">Terms and Conditions</label>
+                <div style="border: 1px solid #ddd; padding: 15px; max-height: 200px; overflow-y: scroll; margin: 10px 0;">
+                    <p><strong>BullAdvisor™ Terms of Service</strong></p>
+                    <p>By proceeding, you agree to the following:</p>
+                    <ul>
+                        <li>All appointments are subject to cancellation without notice</li>
+                        <li>Advisors may be substituted at any time</li>
+                        <li>Meeting durations may be shortened due to unforeseen circumstances</li>
+                        <li>You must arrive 45 minutes early for security screening</li>
+                        <li>Rescheduling requires starting the process over from the beginning</li>
+                        <li>All decisions made by advisors are final and binding</li>
+                        <li>You waive any right to complain about the scheduling process</li>
+                        <li>This agreement is valid in perpetuity across all universes</li>
+                    </ul>
+                </div>
+                <label style="font-weight: normal; margin-top: 10px;">
+                    <input type="checkbox" id="agreeTerms"> I have read and agree to the terms and conditions
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="required">Final Confirmation</label>
+                <input type="text" id="finalConfirm" placeholder="Type 'I CONFIRM' to proceed">
+            </div>
+            <button onclick="submitFinal()" id="finalSubmit" disabled>Submit Final Application</button>
+        </div>
+
+        <div id="finalResult" class="hidden">
+            <!-- This will show the final result -->
+        </div>
+    </div>
+
+    <script>
+        function simulateLoading(progressBarId, duration = 2000) {
+            const progressBar = document.getElementById(progressBarId);
+            let width = 0;
+            const interval = setInterval(() => {
+                width += Math.random() * 10;
+                progressBar.style.width = width + '%';
+                if (width >= 100) {
+                    clearInterval(interval);
+                }
+            }, duration / 20);
+        }
+
+        function startPhase2() {
+            const studentId = document.getElementById('studentId').value;
+            const academicStanding = document.getElementById('academicStanding').value;
+            
+            if (!studentId || !academicStanding) {
+                alert('Please complete all required fields in Phase 1');
+                return;
+            }
+            
+            simulateLoading('progress1');
+            setTimeout(() => {
+                document.getElementById('phase1').classList.add('hidden');
+                document.getElementById('phase2').classList.remove('hidden');
+            }, 2000);
+        }
+
+        function startPhase3() {
+            const purposes = document.querySelectorAll('input[name="purpose"]:checked');
+            const duration = document.getElementById('duration').value;
+            
+            if (purposes.length === 0 || !duration) {
+                alert('Please complete all required fields in Phase 2');
+                return;
+            }
+            
+            simulateLoading('progress2');
+            setTimeout(() => {
+                document.getElementById('phase2').classList.add('hidden');
+                document.getElementById('phase3').classList.remove('hidden');
+            }, 2000);
+        }
+
+        function startPhase4() {
+            const emergencyName = document.getElementById('emergencyName').value;
+            const emergencyPhone = document.getElementById('emergencyPhone').value;
+            const emergencyRelation = document.getElementById('emergencyRelation').value;
+            const bloodType = document.getElementById('bloodType').value;
+            
+            if (!emergencyName || !emergencyPhone || !emergencyRelation || !bloodType) {
+                alert('Please complete all required fields in Phase 3');
+                return;
+            }
+            
+            simulateLoading('progress3');
+            setTimeout(() => {
+                document.getElementById('phase3').classList.add('hidden');
+                document.getElementById('phase4').classList.remove('hidden');
+            }, 2000);
+        }
+
+        function submitFinal() {
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const finalConfirm = document.getElementById('finalConfirm').value;
+            
+            if (!agreeTerms || finalConfirm !== 'I CONFIRM') {
+                alert('Please agree to the terms and type "I CONFIRM" exactly as shown');
+                return;
+            }
+            
+            simulateLoading('progress4');
+            setTimeout(() => {
+                // 50% chance of final failure
+                if (Math.random() < 0.5) {
+                    document.getElementById('phase4').classList.add('hidden');
+                    document.getElementById('finalResult').innerHTML = `
+                        <div class="error-message">
+                            <h2>❌ Final Verification Failed</h2>
+                            <p>Your application could not be processed due to system verification failure.</p>
+                            <p><strong>Error Code:</strong> FV-${Math.random().toString(36).substr(2, 8).toUpperCase()}</p>
+                            <p>Please return to the main scheduling page and try again.</p>
+                            <button onclick="window.location.href='index.html'">Return to Scheduling</button>
+                        </div>
+                    `;
+                    document.getElementById('finalResult').classList.remove('hidden');
+                } else {
+                    document.getElementById('phase4').classList.add('hidden');
+                    document.getElementById('finalResult').innerHTML = `
+                        <div class="success-message">
+                            <h2>✅ Appointment Fully Confirmed!</h2>
+                            <p><strong>Confirmation Number:</strong> APPT-${Math.random().toString(36).substr(2, 12).toUpperCase()}</p>
+                            <p><strong>Next Steps:</strong></p>
+                            <ul>
+                                <li>You will receive an email confirmation within 5-7 business days</li>
+                                <li>Arrive 45 minutes early for mandatory security screening</li>
+                                <li>Bring two forms of ID and your birth certificate</li>
+                                <li>Complete the pre-appointment questionnaire (will be emailed)</li>
+                            </ul>
+                            <p><em>Note: This appointment may be rescheduled due to advisor availability</em></p>
+                            <button onclick="window.location.href='index.html'">Return to Homepage</button>
+                        </div>
+                    `;
+                    document.getElementById('finalResult').classList.remove('hidden');
+                }
+            }, 3000);
+        }
+
+        // Enable final submit button only when conditions are met
+        document.getElementById('agreeTerms').addEventListener('change', updateFinalSubmit);
+        document.getElementById('finalConfirm').addEventListener('input', updateFinalSubmit);
+        
+        function updateFinalSubmit() {
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const finalConfirm = document.getElementById('finalConfirm').value;
+            document.getElementById('finalSubmit').disabled = !(agreeTerms && finalConfirm === 'I CONFIRM');
+        }
+
+        // Start initial loading animation
+        simulateLoading('progress1', 1000);
+    </script>
+</body>
+</html>

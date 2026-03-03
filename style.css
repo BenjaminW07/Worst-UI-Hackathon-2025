@@ -1,0 +1,38 @@
+body {
+    font-family: "Comic Sans MS", cursive;
+    background: repeating-linear-gradient(
+        45deg,
+        #ff00ff,
+        #ff00ff 20px,
+        #00ffff 20px,
+        #00ffff 40px
+    );
+    color: rgb(17, 9, 1);
+    text-align: center;
+}
+
+button {
+    font-size: 30px;
+    background-color: lime;
+    padding: 20px;
+    border: 5px dashed red;
+    cursor: pointer;
+}
+
+input, select {
+    padding: 10px;
+    margin: 5px;
+    border: 4px dotted blue;
+}
+
+.navbar {
+    background: orange;
+    padding: 20px;
+}
+
+.navbar a {
+    margin: 10px;
+    font-size: 22px;
+    color: black;
+    text-decoration: underline wavy red;
+}

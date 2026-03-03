@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Information</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Student Information</h1>
+<p>Please fill out all 27 required fields.</p>
+
+<form>
+
+    <label>Half of Your First Name:</label>
+    <input type="text" maxlength="5"><br>
+
+    <label>Second Half of Your First Name:</label>
+    <input type="text" maxlength="5"><br>
+
+    <label>Middle Name Initial:</label>
+    <input type="text" maxlength="1"><br>
+
+    <label>The Name of Your First Born:</label>
+    <input type="text" maxlength="5"><br>
+
+    <label>Your Name (if you were a villan):</label>
+    <input type="text" maxlength="5"><br>
+
+    <label>Your Last Name in Reverse:</label>
+    <input type="text" maxlength="5"><br>
+
+    <label>Your Major (Pick from 400 options):</label><br>
+    <select size="3" style="width:200px;">
+        <option>Anthropology</option>
+        <option>Biology</option>
+        <option>Pre-Med</option>
+        <option>Before-Med</option>
+        <option>After-Med</option>
+        <option>Applied Metaphysical Sciences</option>
+        <option>Transdisciplinary Systems Analysis</option>
+        <option>Bioethical Computational Theory</option>
+        <option>Cognitive Cartography</option>
+        <option>Digital Ethnography</option>
+        <option>Environmental Psychogeography</option>
+        <option>Experimental Semiotics</option>
+        <option>Historical Climatology</option>
+        <option>Information Architecture</option>
+        <option>Linguistic Anthropology</option>
+        <option>Medical Humanities</option>
+        <option>Molecular Gastronomy</option>
+        <option>Neuroaesthetics</option>
+        <option>Organizational Semiotics</option>
+        <option>Philosophical Computing</option>
+        <option>Quantum Humanities</option>
+        <option>Sonic Ecology</option>
+        <option>Technical Communication Studies</option>
+        <option>Urban Informatics</option>
+        <option>Visual Analytics</option>
+        <option>Agricultural Informatics</option>
+        <option>Biomimetic Design</option>
+        <option>Computational Linguistics</option>
+        <option>Critical Infrastructure Studies</option>
+        <option>Digital Heritage Conservation</option>
+        <option>Ecological Economics</option>
+        <option>Food Systems Planning</option>
+        <option>Geospatial Intelligence</option>
+        <option>Human-Computer Interaction</option>
+        <option>Industrial Organizational Psychology</option>
+        <option>Knowledge Management Systems</option>
+        <option>Landscape Urbanism</option>
+        <option>Media Archaeology</option>
+        <option>Nanoengineering</option>
+        <option>Ocean Governance</option>
+        <option>Performance Studies</option>
+        <option>Computer Science</option>
+        
+    </select><br><br>
+
+    <label>Upload GPA as PDF signed by your advisor: (OR ELSE!) </label>
+    <input type="file"><br>
+
+    <label>
+        <input type="checkbox"> I confirm I do NOT want an appointment.
+    </label><br><br>
+
+</form>
+
+<button onclick="goToAppointments()">Continue</button>
+
+<button onclick="startOver()" style="position:absolute; top:10px; left:10px;">← Back</button>
+
+<script src="script.js"></script>
+</body>
+</html>
