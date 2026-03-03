@@ -13,6 +13,9 @@ This project is not meant to demonstrate clean UI/UX or production‑quality cod
 - Team collaboration
 - Humor and design satire
 
+### Project Name
+This Hackathon entry was originally titled "BullAdvisor", a satirical take on the USF advising scheduler. The name reflects the parody theme of the project.
+
 ### Tech Stack
 - HTML
 - CSS
@@ -31,6 +34,7 @@ No setup required.
 - index.html
 - style.css
 - script.js
+- (other supporting HTML/CSS/JS files)
 
 ### Hackathon Details
 - Event: USF HackJam 2025
